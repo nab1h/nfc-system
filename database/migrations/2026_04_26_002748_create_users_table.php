@@ -20,10 +20,12 @@ return new class extends Migration
             $table->text('bio')->nullable();
             $table->string('job')->nullable();
             $table->string('img')->nullable();
+            $table->string('img_cover')->nullable();
             $table->string('whatsapp')->nullable();
             $table->string('phone')->nullable();
             $table->unsignedBigInteger('theme_id')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->string('role')->default('user');
             // -----------------
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

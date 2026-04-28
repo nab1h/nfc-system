@@ -7,11 +7,16 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USER = 'user';
+    const ROLE_SALES = 'sales';
 
     /**
      * The attributes that are mass assignable.
@@ -38,6 +43,14 @@ class User extends Authenticatable
     public function theme()
     {
         return $this->belongsTo(Theme::class);
+    }
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->slug = Str::slug($user->name) . '-' . uniqid();
+        });
     }
 
     /**
