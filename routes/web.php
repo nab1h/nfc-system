@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\ThemeController;
 use App\Http\Controllers\admin\PlatformController;
 use App\Http\Controllers\admin\OrderController;
+use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
@@ -22,13 +23,22 @@ Route::middleware('auth')->group(function () {
 
     // admin
     Route::middleware('role:admin')->group(function () {
-        Route::get('/admin', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
+
 
         Route::get('/edituser', function () {
             return view('admin.edituser');
         })->name('admin.edituser');
+
+
+
+        Route::prefix('admin')->name('admin.')->group(function () {
+
+            Route::post('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
+
+            Route::resource('users', UserController::class);
+        });
+
+
 
 
 

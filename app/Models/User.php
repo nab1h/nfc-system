@@ -27,14 +27,20 @@ class User extends Authenticatable
         'name',
         'slug',
         'email',
+        'password',
         'bio',
         'job',
         'img',
+        'img_cover',
         'whatsapp',
         'phone',
         'theme_id',
         'is_active',
-        'password',
+        'role',
+        'is_started',
+        'is_count',
+        'has_card',
+        'comment'
     ];
     public function socialLinks()
     {
@@ -48,8 +54,9 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::creating(function ($user) {
-            $user->slug = Str::slug($user->name) . '-' . uniqid();
+        static::created(function ($user) {
+            $user->slug = $user->id;
+            $user->save();
         });
     }
 
