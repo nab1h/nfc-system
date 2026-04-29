@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\admin\ThemeController;
+use App\Http\Controllers\admin\PlatformController;
+use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
@@ -27,40 +30,40 @@ Route::middleware('auth')->group(function () {
             return view('admin.edituser');
         })->name('admin.edituser');
 
-        Route::get('/platforms', function () {
-            return view('admin.platforms');
-        })->name('admin.platforms');
-
-        Route::get('/themes', function () {
-            return view('admin.themes');
-        })->name('admin.themes');
 
 
+        // ** Platforms Controller **
+        Route::resource('platforms', PlatformController::class);
+
+
+        // ** Theme Controller **
+        Route::prefix('themes')->name('themes.')->group(function () {
+            Route::get('/', [ThemeController::class, 'index'])->name('index');
+            Route::post('/', [ThemeController::class, 'store'])->name('store');
+            Route::put('/{id}', [ThemeController::class, 'update'])->name('update');
+            Route::delete('/{id}', [ThemeController::class, 'destroy'])->name('destroy');
+        });
+        // ** Orders Controller **
+        Route::delete('/orders/{id}/force-delete', [OrderController::class, 'forceDelete'])->name('orders.force-delete');
+        Route::delete('/orders/delete-all', [OrderController::class, 'deleteAllOrder'])
+            ->name('orders.deleteAllOrder');
 
 
     });
 
     // admin + sales
     Route::middleware('role:admin,sales')->group(function () {
-        Route::get('/sales', function () {
-            return view('sales.index');
-        })->name('sales.index');
 
-        Route::get('/create', function () {
-            return view('sales.create');
-        })->name('sales.create');
+        Route::get('/orders/archived', [OrderController::class, 'archived'])->name('orders.archived');
+        Route::get('/orders/deleted', [OrderController::class, 'deleted'])->name('orders.deleted');
 
-        Route::get('/update', function () {
-            return view('sales.update');
-        })->name('sales.update');
+        Route::post('/orders/addorder', [OrderController::class, 'storeInUser'])->name('orders.storeInUser');
+        Route::post('/orders/{id}/archive', [OrderController::class, 'archive'])->name('orders.archive');
+        Route::post('/orders/{id}/unarchive', [OrderController::class, 'unarchive'])->name('orders.unarchive');
+        Route::put('/orders/{id}/restore', [OrderController::class, 'restore'])->name('orders.restore');
+        Route::resource('orders', OrderController::class);
 
-        Route::get('/deleted', function () {
-            return view('sales.deleted');
-        })->name('sales.deleted');
 
-        Route::get('/archived', function () {
-            return view('sales.archived');
-        })->name('sales.archived');
     });
 });
 require __DIR__.'/auth.php';

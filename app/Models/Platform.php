@@ -8,6 +8,7 @@ class Platform extends Model
 {
     protected $fillable = [
         'name',
+        'is_active'
     ];
 
     public function socialLinks()

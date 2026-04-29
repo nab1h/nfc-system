@@ -16,10 +16,9 @@
                 </div>
 
                 <!-- Form Start -->
-                <!-- ملاحظة: تأكد من وجود الروت الصحيح 'orders.update' -->
-                <form method="POST" action="">
+                <form method="POST" action="{{ route('orders.update', $order->id) }}">
                     @csrf
-                    @method('PUT') <!-- ضروري لتحديد طريقة التحديث في Laravel -->
+                    @method('PUT')
 
                     <!-- Grid Layout for Inputs -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -27,7 +26,7 @@
                         <!-- Customer Name -->
                         <div>
                             <label class="block text-sm font-medium text-gray-300 mb-2">اسم العميل</label>
-                            <input type="text" name="customer_name" value="{{ old('customer_name', $order->customer_name) }}" required
+                            <input type="text" name="name" value="{{ old('customer_name', $order->name) }}" required
                                 class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#E60914] focus:ring-1 focus:ring-[#E60914] transition">
                         </div>
 

@@ -110,6 +110,56 @@
                         </label>
                     </div>
                 </div>
+            </div>
+
+            <!-- 4. Theme Selection Section (NEW) -->
+            <div class="bg-[#111111] border border-[#1a1a1a] rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-white mb-6 border-b border-[#1a1a1a] pb-3">اختيار الثيم</h3>
+                <p class="text-gray-400 text-sm mb-6">اختر الشكل المناسب لبطاقتك الرقمية.</p>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+
+                    @php
+                    // Dummy Data for Preview - Replace with: $themes = App\Models\Theme::all();
+                    $themes = [
+                    (object)['id' => 1, 'theme' => 'Dark Red', 'img' => 'https://via.placeholder.com/300x150/0a0a0a/E60914?text=Dark+Red'],
+                    (object)['id' => 2, 'theme' => 'Ocean Blue', 'img' => 'https://via.placeholder.com/300x150/0a0a0a/3B82F6?text=Ocean+Blue'],
+                    (object)['id' => 3, 'theme' => 'Minimal', 'img' => 'https://via.placeholder.com/300x150/ffffff/000000?text=Minimal'],
+                    ];
+                    $selected_theme_id = 1; // Replace with auth()->user()->theme_id
+                    @endphp
+
+                    @foreach($themes as $theme)
+                    <!-- Theme Card -->
+                    <label class="relative cursor-pointer group">
+                        <!-- Radio Input Hidden -->
+                        <input type="radio" name="theme_id" value="{{ $theme->id }}" class="sr-only peer" {{ $theme->id == $selected_theme_id ? 'checked' : '' }}>
+
+                        <!-- Visual Card -->
+                        <div class="border-2 rounded-xl overflow-hidden transition-all duration-300
+                                        border-[#1a1a1a] hover:border-gray-600
+                                        peer-checked:border-[#E60914] peer-checked:shadow-[0_0_15px_rgba(230,9,20,0.2)]">
+
+                            <!-- Theme Preview Image -->
+                            <div class="aspect-video bg-[#0a0a0a] relative overflow-hidden">
+                                <img src="{{ $theme->img }}" alt="{{ $theme->theme }}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition">
+
+                                <!-- Checkmark Icon when selected -->
+                                <div class="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#E60914] flex items-center justify-center opacity-0 peer-checked:opacity-100 transition transform scale-50 peer-checked:scale-100 shadow-lg">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Theme Name -->
+                            <div class="p-3 bg-[#0a0a0a] text-center border-t border-[#1a1a1a]">
+                                <span class="text-sm font-medium text-gray-300 group-hover:text-white transition">{{ $theme->theme }}</span>
+                            </div>
+                        </div>
+                    </label>
+                    @endforeach
+                </div>
 
                 <div class="mt-6 flex justify-end">
                     <button type="submit" class="px-6 py-2.5 bg-[#E60914] hover:bg-red-700 text-white font-bold rounded-lg transition flex items-center gap-2">
