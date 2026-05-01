@@ -8,44 +8,31 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 
+
+
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/vcard/{slug}', [ProfileController::class, 'downloadVcard'])->name('vcard.download');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('/profile/update-data', [ProfileController::class, 'updateData'])->name('profile.update.data');
 
     // admin
     Route::middleware('role:admin')->group(function () {
-
-
-        Route::get('/edituser', function () {
-            return view('admin.edituser');
-        })->name('admin.edituser');
-
-
-
         Route::prefix('admin')->name('admin.')->group(function () {
-
             Route::post('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
-
             Route::resource('users', UserController::class);
         });
-
-
-
-
-
         // ** Platforms Controller **
         Route::resource('platforms', PlatformController::class);
-
-
         // ** Theme Controller **
         Route::prefix('themes')->name('themes.')->group(function () {
             Route::get('/', [ThemeController::class, 'index'])->name('index');
@@ -57,23 +44,20 @@ Route::middleware('auth')->group(function () {
         Route::delete('/orders/{id}/force-delete', [OrderController::class, 'forceDelete'])->name('orders.force-delete');
         Route::delete('/orders/delete-all', [OrderController::class, 'deleteAllOrder'])
             ->name('orders.deleteAllOrder');
-
-
     });
 
     // admin + sales
     Route::middleware('role:admin,sales')->group(function () {
-
         Route::get('/orders/archived', [OrderController::class, 'archived'])->name('orders.archived');
         Route::get('/orders/deleted', [OrderController::class, 'deleted'])->name('orders.deleted');
-
         Route::post('/orders/addorder', [OrderController::class, 'storeInUser'])->name('orders.storeInUser');
         Route::post('/orders/{id}/archive', [OrderController::class, 'archive'])->name('orders.archive');
         Route::post('/orders/{id}/unarchive', [OrderController::class, 'unarchive'])->name('orders.unarchive');
         Route::put('/orders/{id}/restore', [OrderController::class, 'restore'])->name('orders.restore');
         Route::resource('orders', OrderController::class);
-
-
     });
-});
+    }
+);
+
+Route::get('/u/{theme_id}/{slug}', [ProfileController::class, 'show'])->name('profile.show');
 require __DIR__.'/auth.php';

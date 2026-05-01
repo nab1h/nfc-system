@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('img_cover')->nullable();
             $table->string('whatsapp')->nullable();
             $table->string('phone')->nullable();
-            $table->unsignedBigInteger('theme_id')->nullable();
+            $table->unsignedBigInteger('theme_id')->default(2);
             $table->boolean('is_active')->default(true);
             $table->string('role')->default('user');
             // -----------------

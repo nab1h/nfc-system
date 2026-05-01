@@ -90,7 +90,7 @@
 
                 <div class="reveal delay-3 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                     @auth
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('profile.index') }}">
                         <button class="btn-primary w-full">
                             <span>لوحة التحكم</span>
                         </button>
