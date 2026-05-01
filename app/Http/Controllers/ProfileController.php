@@ -123,25 +123,47 @@ class ProfileController extends Controller
 
     public function show($theme_id, $slug)
     {
-        // جلب المستخدم
         $user = User::where('slug', $slug)
             ->with(['socialLinks.platform'])
             ->firstOrFail();
 
-        // تصحيح الرابط إذا كان رقم الثيم مختلفاً
         if ($user->theme_id != $theme_id) {
             return redirect()->route('profile.show', [$user->theme_id, $user->slug]);
         }
 
-        // --- الشرط الجديد ---
-        // إذا كان الحساب غير مفعل أو لا يملك كارت، نعرض صفحة الدعم الفني
         if (!$user->is_active || !$user->has_card) {
-            // يمكنك تمرير اسم المستخدم لإظهاره في صفحة الدعم (اختياري)
             return view('support.inactive', ['name' => $user->name]);
         }
 
-        // إذا كانت الحالة سليمة، نعرض البطاقة
-        return view('profile.show', compact('user'));
+        switch ($user->theme_id) {
+            case 2:
+                return view('profile.themes.dark', compact('user'));
+            case 3:
+                return view('profile.themes.light', compact('user'));
+            case 4:
+                return view('profile.themes.medical', compact('user'));
+            case 5:
+                return view('profile.themes.photographer', compact('user'));
+            case 6:
+                return view('profile.themes.designer', compact('user'));
+            case 7:
+                return view('profile.themes.physio', compact('user'));
+            case 8:
+                return view('profile.themes.store', compact('user'));
+            case 9:
+                return view('profile.themes.sales', compact('user'));
+            case 10:
+                return view('profile.themes.corporate', compact('user'));
+            case 11:
+                return view('profile.themes.accountant', compact('user'));
+            case 12:
+                return view('profile.themes.coach', compact('user'));
+            case 13:
+                return view('profile.themes.marketing', compact('user'));
+
+            default:
+                return view('profile.themes.dark', compact('user'));
+        }
     }
 
 
