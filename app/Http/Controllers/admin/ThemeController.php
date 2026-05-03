@@ -20,7 +20,7 @@ class ThemeController extends Controller
     {
         $request->validate([
             'theme' => 'required|string|max:255|unique:themes,theme',
-            'img'   => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'img'   => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:3048',
         ]);
 
         $imgPath = null;

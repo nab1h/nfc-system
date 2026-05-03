@@ -10,6 +10,7 @@
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;400;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
@@ -59,6 +60,13 @@
                 #0a0a0a;
             pointer-events: none;
             z-index: -1;
+        }
+
+        .qr-container canvas {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
         }
     </style>
 </head>

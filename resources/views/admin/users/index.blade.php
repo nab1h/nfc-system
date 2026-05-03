@@ -1,3 +1,9 @@
+<?php
+
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+?>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-white leading-tight">
@@ -114,6 +120,7 @@
                                 <th scope="col" class="px-6 py-4">الصورة</th>
                                 <th scope="col" class="px-6 py-4">الاسم</th>
                                 <th scope="col" class="px-6 py-4">ال Slug</th>
+                                <th scope="col" class="px-6 py-4">QR</th>
                                 <th scope="col" class="px-6 py-4">الوظيفة</th>
                                 <th scope="col" class="px-6 py-4">البريد</th>
                                 <th scope="col" class="px-6 py-4">الهاتف</th>
@@ -144,6 +151,27 @@
                                     <span class="font-mono text-xs bg-[#0a0a0a] px-2 py-1 rounded text-gray-400 border border-[#222]">
                                         {{ $user->slug }}
                                     </span>
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-col items-center justify-center gap-2">
+                                        @if($user->theme_id && $user->slug)
+                                        @php $profileUrl = route('profile.show', ['theme_id' => $user->theme_id, 'slug' => $user->slug]); @endphp
+
+                                        <div id="qr-code-{{ $user->id }}"
+                                            data-url="{{ $profileUrl }}"
+
+                                            class="qr-container w-[100px] h-[100px] bg-white p-1 rounded shadow-sm flex items-center justify-center">
+                                        </div>
+
+                                        <button type="button"
+                                            onclick="downloadQR('qr-code-{{ $user->id }}', '{{ $user->slug }}')"
+                                            class="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 cursor-pointer transition">
+                                            <i class="fas fa-download"></i>
+                                            <span>تحميل</span>
+                                        </button>
+                                        @endif
+                                    </div>
                                 </td>
 
                                 <!-- Job -->
@@ -290,4 +318,34 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('[id^="qr-code-"]').forEach(function(element) {
+                const url = element.getAttribute('data-url');
+                if (url) {
+                    new QRCode(element, {
+                        text: url,
+                        width: 800,
+                        height: 800,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                }
+            });
+        });
+
+        function downloadQR(containerId, userName) {
+            const container = document.getElementById(containerId);
+            const canvas = container.querySelector('canvas');
+
+            if (canvas) {
+                const link = document.createElement('a');
+                link.download = `qr-${userName}-hq.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            }
+        }
+    </script>
 </x-app-layout>
