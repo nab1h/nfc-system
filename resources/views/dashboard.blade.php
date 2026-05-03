@@ -148,14 +148,15 @@
 
                                 @elseif($platform->name == 'Email')
                                 <svg class="w-6 h-6 text-red-400" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M2 4h20v16H2V4zm10 8L4 6h16l-8 6z" />
+                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                                 </svg>
 
 
                                 @elseif($platform->name == 'Website')
                                 <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 2a8 8 0 110 16 8 8 0 010-16z" />
+                                    <path d="M3.9 12a5 5 0 015-5h3v2h-3a3 3 0 000 6h3v2h-3a5 5 0 01-5-5zm6-1h4v2h-4v-2zm5.1-4h-3v2h3a3 3 0 010 6h-3v2h3a5 5 0 000-10z" />
                                 </svg>
+
 
 
 
@@ -172,7 +173,7 @@
                                 class="flex-grow bg-transparent text-white focus:outline-none text-sm">
 
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" name="social_active[{{ $platform->id }}]" class="sr-only peer" {{ isset($userLinks[$platform->id]) ? 'checked' : '' }}>
+                                <input type="checkbox" name="social_active[{{ $platform->id }}]" class="sr-only peer" {{ !empty($userLinks[$platform->id]) ? 'checked' : '' }}>
                                 <div class="w-9 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#E60914]"></div>
                             </label>
                         </div>

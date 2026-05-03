@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,25 +98,31 @@
                     <div class="w-10 h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] mb-2 group-hover:bg-[#E60914] transition">
                         @switch($link->platform->name)
                         @case('Instagram')
-                        <i class="fab fa-instagram text-xl text-pink-500 group-hover:text-white"></i>
-                        @break
+                        <i class="fab fa-instagram text-xl text-pink-500 group-hover:text-white"></i> @break
                         @case('Twitter')
-                        <i class="fab fa-twitter text-xl text-blue-400 group-hover:text-white"></i>
-                        @break
-                        @case('WhatsApp')
-                        <i class="fab fa-whatsapp text-xl text-green-500 group-hover:text-white"></i>
-                        @break
+                        <i class="fab fa-twitter text-xl text-sky-400 group-hover:text-white"></i> @break
                         @case('LinkedIn')
-                        <i class="fab fa-linkedin text-xl text-blue-600 group-hover:text-white"></i>
-                        @break
+                        <i class="fab fa-linkedin text-xl text-blue-600 group-hover:text-white"></i> @break
                         @case('Facebook')
-                        <i class="fab fa-facebook text-xl text-blue-500 group-hover:text-white"></i>
-                        @break
+                        <i class="fab fa-facebook text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('Tiktok')
+                        <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('WhatsApp')
+                        <i class="fab fa-whatsapp text-xl text-blue-500 group-hover:text-white"></i> @break
                         @case('TikTok')
-                        <i class="fab fa-tiktok text-xl text-white group-hover:text-white"></i>
-                        @break
+                        <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('Snapchat')
+                        <i class="fab fa-snapchat text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('Telegram')
+                        <i class="fab fa-telegram text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('Email')
+                        <i class="fas fa-envelope text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('Website')
+                        <i class="fas fa-globe text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('GitHub')
+                        <i class="fab fa-github text-xl text-blue-500 group-hover:text-white"></i> @break
                         @default
-                        <i class="fas fa-link text-xl text-gray-400 group-hover:text-white"></i>
+                        <i class="fas fa-link text-xl text-slate-400 group-hover:text-white"></i>
                         @endswitch
                     </div>
                     <span class="text-xs text-gray-500 group-hover:text-gray-300">{{ $link->platform->name }}</span>

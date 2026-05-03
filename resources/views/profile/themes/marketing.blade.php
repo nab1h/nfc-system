@@ -118,18 +118,6 @@
                     <i class="fas fa-calendar-check text-lg"></i>
                     <span>احجز جلستك الآن</span>
                 </a>
-
-                <!-- زر المتابعة (سوشيال) -->
-                @if($user->socialLinks->count() > 0)
-                @php $firstLink = $user->socialLinks->first(); @endphp
-                <a href="{{ $firstLink->url ?? '#' }}" target="_blank"
-                    class="flex items-center justify-center gap-3 w-full bg-white/5 border border-white/10 hover:border-pink-500 text-white font-bold py-3 px-6 rounded-xl transition">
-                    <i class="fas fa-play-circle text-pink-400"></i>
-                    <span>تابع أحدث المحتوى</span>
-                </a>
-                @endif
-
-                <!-- زر حفظ الاتصال -->
                 <a href="{{ route('vcard.download', $user->slug) }}"
                     class="flex items-center justify-center gap-2 w-full bg-transparent border border-white/5 hover:border-white/20 text-gray-400 font-bold py-3 px-6 rounded-xl transition text-sm">
                     <i class="fas fa-download text-gray-500"></i>
@@ -137,7 +125,6 @@
                 </a>
             </div>
 
-            <!-- روابط السوشيال ميديا -->
             @if($user->socialLinks->count() > 0)
             <div class="border-t border-white/10 pt-6">
                 <div class="flex justify-center gap-4">
@@ -147,17 +134,34 @@
 
                         @php $platform = strtolower($link->platform->name); @endphp
 
-                        @if($platform == 'youtube')
-                        <i class="fab fa-youtube text-xl text-red-500 group-hover:text-red-400"></i>
-                        @elseif($platform == 'instagram')
-                        <i class="fab fa-instagram text-xl text-pink-500 group-hover:text-pink-400"></i>
-                        @elseif($platform == 'linkedin')
-                        <i class="fab fa-linkedin-in text-xl text-blue-400 group-hover:text-blue-300"></i>
-                        @elseif($platform == 'tiktok')
-                        <i class="fab fa-tiktok text-xl text-white group-hover:text-gray-200"></i>
-                        @else
-                        <i class="fas fa-link text-xl text-gray-400 group-hover:text-white"></i>
-                        @endif
+                        @switch($link->platform->name)
+                        @case('Instagram')
+                        <i class="fab fa-instagram text-xl text-pink-500 group-hover:text-white"></i> @break
+                        @case('Twitter')
+                        <i class="fab fa-twitter text-xl text-sky-400 group-hover:text-white"></i> @break
+                        @case('LinkedIn')
+                        <i class="fab fa-linkedin text-xl text-blue-600 group-hover:text-white"></i> @break
+                        @case('Facebook')
+                        <i class="fab fa-facebook text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('Tiktok')
+                        <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('WhatsApp')
+                        <i class="fab fa-whatsapp text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('TikTok')
+                        <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('Snapchat')
+                        <i class="fab fa-snapchat text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('Telegram')
+                        <i class="fab fa-telegram text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('Email')
+                        <i class="fas fa-envelope text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('Website')
+                        <i class="fas fa-globe text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @case('GitHub')
+                        <i class="fab fa-github text-xl text-blue-500 group-hover:text-white"></i> @break
+                        @default
+                        <i class="fas fa-link text-xl text-slate-400 group-hover:text-white"></i>
+                        @endswitch
                     </a>
                     @endforeach
                 </div>

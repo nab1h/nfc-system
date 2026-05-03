@@ -100,17 +100,14 @@
                 @endif
             </div>
 
-            <!-- أزرار التواصل الرسمية -->
             <div class="space-y-3 mb-8">
 
-                <!-- زر البريد الإلكتروني (الأهم للشركات) -->
-                <a href="mailto:{{ $user->email }}"
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ $user->email }}"
                     class="flex items-center justify-center gap-3 w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 px-6 rounded-xl transition btn-press shadow-md">
                     <i class="fas fa-envelope text-lg"></i>
                     <span>إرسال بريد إلكتروني</span>
                 </a>
 
-                <!-- زر الاتصال -->
                 @if($user->phone)
                 <a href="tel:{{ $user->phone }}"
                     class="flex items-center justify-center gap-3 w-full bg-blue-50 hover:bg-blue-100 text-blue-800 font-bold py-3.5 px-6 rounded-xl transition border border-blue-100">
@@ -139,15 +136,32 @@
 
                             @php $platform = strtolower($link->platform->name); @endphp
 
-                            @if($platform == 'linkedin')
-                            <i class="fab fa-linkedin-in text-xl text-blue-700 group-hover:text-white"></i>
-                            @elseif($platform == 'twitter' || $platform == 'x')
-                            <i class="fab fa-x-twitter text-xl text-slate-800 group-hover:text-white"></i>
-                            @elseif($platform == 'facebook')
-                            <i class="fab fa-facebook-f text-xl text-slate-800 group-hover:text-white"></i>
-                            @else
-                            <i class="fas fa-globe text-xl text-slate-500 group-hover:text-white"></i>
-                            @endif
+                            @switch($link->platform->name)
+                            @case('Instagram')
+                            <i class="fab fa-instagram text-xl text-pink-500 group-hover:text-white"></i> @break
+                            @case('Twitter')
+                            <i class="fab fa-twitter text-xl text-sky-400 group-hover:text-white"></i> @break
+                            @case('LinkedIn')
+                            <i class="fab fa-linkedin text-xl text-blue-600 group-hover:text-white"></i> @break
+                            @case('Facebook')
+                            <i class="fab fa-facebook text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Tiktok')
+                            <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('WhatsApp')
+                            <i class="fab fa-whatsapp text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('TikTok')
+                            <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Snapchat')
+                            <i class="fab fa-snapchat text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Telegram')
+                            <i class="fab fa-telegram text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Website')
+                            <i class="fas fa-globe text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('GitHub')
+                            <i class="fab fa-github text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @default
+                            <i class="fas fa-link text-xl text-slate-400 group-hover:text-white"></i>
+                            @endswitch
                         </div>
                         <span class="text-xs text-gray-500 group-hover:text-slate-800 font-medium">{{ $link->platform->name }}</span>
                     </a>

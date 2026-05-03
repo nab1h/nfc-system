@@ -61,7 +61,33 @@ class ProfileController extends Controller
         if ($request->has('social_links')) {
             foreach ($request->social_links as $platformId => $url) {
                 $url = trim($url);
+
                 if (!empty($url)) {
+
+                    $platform = Platform::find($platformId);
+
+                    // 🔥 WhatsApp fix
+                    if ($platform && $platform->name == 'WhatsApp') {
+                        $number = preg_replace('/[^0-9]/', '', $url);
+
+                        // لو الرقم مصري ويبدأ بـ 01
+                        if (str_starts_with($number, '01')) {
+                            $number = '2' . $number;
+                        }
+
+                        $url = 'https://wa.me/' . $number;
+                    }
+
+                    if ($platform && $platform->name == 'Email') {
+                        $url = 'mailto:' . $url;
+                    }
+
+                    if ($platform && $platform->name == 'Website') {
+                        if (!str_starts_with($url, 'http')) {
+                            $url = 'https://' . $url;
+                        }
+                    }
+
                     SocialLink::updateOrCreate(
                         ['user_id' => $user->id, 'platform_id' => $platformId],
                         ['url' => $url]

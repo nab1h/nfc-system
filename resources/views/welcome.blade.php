@@ -10,6 +10,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;400;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
 
     <script>
         tailwind.config = {
@@ -31,6 +48,88 @@
                 }
             }
         }
+    </script>
+
+    <script>
+        // دالة فتح النافذة
+        function openProductModal(card) {
+            // 1. جلب عنصر البيانات المخفي
+            const data = card.querySelector('.product-data');
+
+            // التحقق من وجود البيانات
+            if (!data) {
+                console.log('No data found on this card');
+                return;
+            }
+
+            // 2. استخراج البيانات
+            const title = data.dataset.title;
+            const desc = data.dataset.desc;
+            // استخدام JSON.parse للقوائم
+            const features = JSON.parse(data.dataset.features || '[]');
+            const missing = JSON.parse(data.dataset.missing || '[]');
+            const img1 = data.dataset.img1;
+            const img2 = data.dataset.img2;
+            const img3 = data.dataset.img3;
+
+            // 3. وضع البيانات في عناصر النافذة
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalDesc').innerText = desc;
+
+            document.getElementById('modalMainImg').src = img1;
+            document.getElementById('modalThumb1').src = img1;
+            document.getElementById('modalThumb2').src = img2;
+            document.getElementById('modalThumb3').src = img3;
+
+            const featuresContainer = document.getElementById('modalFeatures');
+            featuresContainer.innerHTML = '';
+
+            features.forEach(feature => {
+                featuresContainer.innerHTML += `
+                <li class="flex items-center gap-3">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    <span class="text-white">${feature}</span>
+                </li>
+            `;
+            });
+
+            missing.forEach(feature => {
+                featuresContainer.innerHTML += `
+                <li class="flex items-center gap-3 text-muted line-through opacity-70">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                    <span>${feature}</span>
+                </li>
+            `;
+            });
+
+            const modal = document.getElementById('productModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('productModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        function changeMainImg(thumbnail) {
+            const mainImg = document.getElementById('modalMainImg');
+            mainImg.src = thumbnail.querySelector('img').src;
+        }
+
+        document.getElementById('productModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProductModal();
+            }
+        });
     </script>
 </head>
 
@@ -170,7 +269,7 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
                 <h2 class="reveal font-display text-3xl md:text-5xl font-black mb-4">
-                    لماذا تختار <span class="text-accent">NEXUS</span>
+                    لماذا تختار <span class="text-accent">AVORA</span>
                 </h2>
                 <p class="reveal delay-1 text-muted text-lg max-w-2xl mx-auto">
                     بطاقة ذكية تجمع بين الأناقة والتقنية لتعزيز حضورك المهني
@@ -265,164 +364,168 @@
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-24 relative bg-surface">
+    <!-- Products Section -->
+    <!-- Products Section -->
+    <section id="products" class="py-24 relative bg-surface">
         <div class="absolute inset-0 grid-pattern opacity-50"></div>
 
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center mb-16">
                 <h2 class="reveal font-display text-3xl md:text-5xl font-black mb-4">
-                    اختر باقتك
+                    منتجاتنا
                 </h2>
                 <p class="reveal delay-1 text-muted text-lg max-w-2xl mx-auto">
-                    باقات متنوعة تناسب جميع الاحتياجات والميزانيات
+                    حلول ذكية ومبتكرة لتطوير عملك
                 </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <!-- Basic Plan -->
-                <div class="reveal pricing-card">
-                    <h3 class="text-xl font-bold mb-2">الباقة الفردية</h3>
-                    <p class="text-muted text-sm mb-6">للمبتدئين والمستقلين</p>
 
-                    <div class="mb-6">
-                        <span class="font-display text-4xl font-black">299</span>
-                        <span class="text-muted">جنية</span>
+                <!-- Product 1: Classic -->
+                <div onclick="openProductModal(this)" class="reveal product-card group bg-surface border border-default rounded-2xl overflow-hidden hover:border-accent transition-all duration-300 cursor-pointer">
+
+                    <!-- بيانات مخفية للجافاسكريبت -->
+                    <div class="hidden product-data"
+                        data-title="بطاقة NFC كلاسيك"
+                        data-desc="تصميم أنيق وعملي يناسب الاستخدام اليومي، مصنوعة من مواد عالية الجودة مع مقاومة للماء."
+                        data-features='["ذاكرة تخزينية 1 جيجا", "صفحة بروفايل أساسية", "مقاومة للماء", "صلاحية سنة واحدة"]'
+                        data-missing='["طباعة لوجو مخصص", "تصميم VIP"]'
+                        data-img1="https://via.placeholder.com/600x400/1a1a1a/E60914?text=Classic+View+1"
+                        data-img2="https://via.placeholder.com/600x400/1a1a1a/fff?text=Classic+View+2"
+                        data-img3="https://via.placeholder.com/600x400/1a1a1a/E60914?text=Classic+View+3">
                     </div>
 
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>بطاقة NFC واحدة</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>صفحة بروفايل شخصية</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>5 روابط خارجية</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-muted">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2">
-                                <line x1="18" y1="6" x2="6" y2="18" />
-                                <line x1="6" y1="6" x2="18" y2="18" />
-                            </svg>
-                            <span>دعم فني متميز</span>
-                        </li>
-                    </ul>
-                    <a href="{{ route('register') }}">
-                        <button class="btn-secondary w-full">ابدأ الآن</button>
-                    </a>
-                </div>
-
-                <!-- Pro Plan -->
-                <div class="reveal delay-1 pricing-card featured">
-                    <h3 class="text-xl font-bold mb-2">الباقة الاحترافية</h3>
-                    <p class="text-muted text-sm mb-6">للرواد والمهنيين</p>
-
-                    <div class="mb-6">
-                        <span class="font-display text-4xl font-black text-accent">499</span>
-                        <span class="text-muted">جنية</span>
+                    <div class="relative h-48 overflow-hidden bg-[#111]">
+                        <img src="https://via.placeholder.com/400x300/1a1a1a/E60914?text=Classic+Card"
+                            alt="بطاقة كلاسيك"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
 
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>بطاقتا NFC</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>صفحة بروفايل مخصصة</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>روابط غير محدودة</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>دعم فني على مدار الساعة</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>تحليلات متقدمة</span>
-                        </li>
-                    </ul>
-                    <a href="{{ route('register') }}">
-                        <button class="btn-primary w-full">
-                            <span>اشترك الآن</span>
-                        </button>
-                    </a>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">بطاقة NFC كلاسيك</h3>
+                        <p class="text-muted text-sm mb-4">تصميم أنيق عملي</p>
+                        <div class="flex justify-between items-center text-accent">
+                            <span class="font-bold text-sm">المزيد من التفاصيل</span>
+                            <i class="fas fa-arrow-left text-sm transform group-hover:-translate-x-2 transition-transform"></i>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Enterprise Plan -->
-                <div class="reveal delay-2 pricing-card">
-                    <h3 class="text-xl font-bold mb-2">باقة الشركات</h3>
-                    <p class="text-muted text-sm mb-6">للفرق والمؤسسات</p>
+                <!-- Product 2: Pro (Featured) -->
+                <div onclick="openProductModal(this)" class="reveal delay-1 product-card group bg-surface border-2 border-accent rounded-2xl overflow-hidden shadow-lg shadow-accent/10 relative cursor-pointer">
 
-                    <div class="mb-6">
-                        <span class="font-display text-4xl font-black">999</span>
-                        <span class="text-muted">جنية</span>
+                    <div class="absolute top-4 right-4 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+                        الأكثر مبيعاً
                     </div>
 
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>5 بطاقات NFC</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>بروفايل موحد للشركة</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>لوحة تحكم مركزية</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>تخصيص العلامة التجارية</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <span>مدير حساب مخصص</span>
-                        </li>
-                    </ul>
+                    <div class="hidden product-data"
+                        data-title="بطاقة NFC برو"
+                        data-desc="للمحترفين والشركات، تقدم أداءً استثنائياً وتصميماً يجذب الأنظار مع إمكانيات لا محدودة."
+                        data-features='["ذاكرة تخزينية 4 جيجا", "صفحة بروفايل مخصصة", "طباعة لوجو مجاناً", "تصميم VIP حصري", "دعم فني 24/7"]'
+                        data-missing='[]'
+                        data-img1="https://via.placeholder.com/600x400/1a1a1a/E60914?text=Pro+View+1"
+                        data-img2="https://via.placeholder.com/600x400/1a1a1a/fff?text=Pro+View+2"
+                        data-img3="https://via.placeholder.com/600x400/1a1a1a/E60914?text=Pro+View+3">
+                    </div>
 
-                    <a href="{{ route('register') }}">
-                        <button class="btn-secondary w-full">ابدأ الآن</button>
-                    </a>
+                    <div class="relative h-48 overflow-hidden bg-[#111]">
+                        <img src="https://via.placeholder.com/400x300/1a1a1a/E60914?text=Premium+Card"
+                            alt="بطاقة برو"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">بطاقة NFC برو</h3>
+                        <p class="text-muted text-sm mb-4">للمحترفين والشركات</p>
+                        <div class="flex justify-between items-center text-accent">
+                            <span class="font-bold text-sm">المزيد من التفاصيل</span>
+                            <i class="fas fa-arrow-left text-sm transform group-hover:-translate-x-2 transition-transform"></i>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Product 3: Coming Soon -->
+                <div class="reveal delay-2 product-card group bg-surface border border-dashed border-gray-600 rounded-2xl overflow-hidden opacity-60 relative cursor-default">
+                    <div class="relative h-48 overflow-hidden bg-[#111]">
+                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-t from-surface to-[#1a1a1a]">
+                            <svg class="w-16 h-16 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="p-6 text-center">
+                        <span class="inline-block bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 text-xs font-bold px-3 py-1 rounded-full mb-3">
+                            قريباً
+                        </span>
+                        <h3 class="text-xl font-bold mb-1 text-gray-400">بطاقة NFC فل ميتال</h3>
+                        <p class="text-muted text-sm">تصميم معدني فاخر</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Contact Form Section -->
+    <!-- Product Modal Structure -->
+    <div id="productModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="relative bg-surface border border-default rounded-3xl max-w-4xl w-full mx-auto shadow-2xl my-8 animate-fadeIn">
+
+            <!-- Close Button -->
+            <button onclick="closeProductModal()" class="absolute top-4 left-4 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-accent text-white transition">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="grid md:grid-cols-2 gap-0">
+
+                <!-- Gallery Section -->
+                <div class="p-6 bg-[#111] rounded-t-3xl md:rounded-tr-none md:rounded-r-3xl">
+                    <!-- Main Image -->
+                    <div class="aspect-square rounded-xl overflow-hidden mb-4 bg-[#0a0a0a] flex items-center justify-center">
+                        <img id="modalMainImg" src="" alt="Product Image" class="w-full h-full object-contain">
+                    </div>
+
+                    <!-- Thumbnails -->
+                    <div class="grid grid-cols-3 gap-2">
+                        <div onclick="changeMainImg(this)" class="aspect-square rounded-lg overflow-hidden cursor-pointer border-2 border-transparent hover:border-accent transition">
+                            <img id="modalThumb1" src="" class="w-full h-full object-cover">
+                        </div>
+                        <div onclick="changeMainImg(this)" class="aspect-square rounded-lg overflow-hidden cursor-pointer border-2 border-transparent hover:border-accent transition">
+                            <img id="modalThumb2" src="" class="w-full h-full object-cover">
+                        </div>
+                        <div onclick="changeMainImg(this)" class="aspect-square rounded-lg overflow-hidden cursor-pointer border-2 border-transparent hover:border-accent transition">
+                            <img id="modalThumb3" src="" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Details Section -->
+                <div class="p-8 flex flex-col">
+                    <h2 id="modalTitle" class="text-3xl font-black text-white mb-2"></h2>
+                    <p id="modalDesc" class="text-muted text-sm mb-6"></p>
+
+                    <!-- Features -->
+                    <div class="mb-8 flex-grow">
+                        <h4 class="text-lg font-bold text-white mb-4">المواصفات والمميزات</h4>
+                        <ul id="modalFeatures" class="space-y-3">
+                            <!-- JS will inject features here -->
+                        </ul>
+                    </div>
+
+                    <!-- Action Button -->
+                    <a href="#" class="block mt-auto">
+                        <button class="btn-primary w-full text-lg py-4">
+                            <i class="fas fa-shopping-cart ml-2"></i>
+                            اطلب الآن
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     <section id="contact" class="py-24 relative">
         <div class="hero-bg"></div>
 
@@ -697,6 +800,83 @@
             initSmoothScroll();
             initForm();
             initNavbar();
+        });
+    </script>
+
+    <script>
+        function openProductModal(card) {
+            try {
+                const data = card.querySelector('.product-data');
+
+                if (!data) {
+                    console.error('لم يتم العثور على بيانات المنتج (product-data div)');
+                    return;
+                }
+
+                const title = data.dataset.title;
+                const desc = data.dataset.desc;
+                const features = JSON.parse(data.dataset.features || '[]');
+                const missing = JSON.parse(data.dataset.missing || '[]');
+                const img1 = data.dataset.img1;
+                const img2 = data.dataset.img2;
+                const img3 = data.dataset.img3;
+
+                document.getElementById('modalTitle').innerText = title;
+                document.getElementById('modalDesc').innerText = desc;
+
+                document.getElementById('modalMainImg').src = img1;
+                document.getElementById('modalThumb1').src = img1;
+                document.getElementById('modalThumb2').src = img2;
+                document.getElementById('modalThumb3').src = img3;
+
+                const featuresContainer = document.getElementById('modalFeatures');
+                featuresContainer.innerHTML = '';
+
+                features.forEach(feature => {
+                    featuresContainer.innerHTML += `
+                    <li class="flex items-center gap-3">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2"><polyline points="20 6 9 17 4 12" /></svg>
+                        <span class="text-white">${feature}</span>
+                    </li>
+                `;
+                });
+
+                missing.forEach(feature => {
+                    featuresContainer.innerHTML += `
+                    <li class="flex items-center gap-3 text-muted line-through opacity-70">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                        <span>${feature}</span>
+                    </li>
+                `;
+                });
+
+                // 4. إظهار النافذة
+                const modal = document.getElementById('productModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+
+            } catch (error) {
+                console.error('حدث خطأ أثناء فتح النافذة:', error);
+            }
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('productModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        function changeMainImg(thumbnail) {
+            const mainImg = document.getElementById('modalMainImg');
+            mainImg.src = thumbnail.querySelector('img').src;
+        }
+
+        document.getElementById('productModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProductModal();
+            }
         });
     </script>
 </body>

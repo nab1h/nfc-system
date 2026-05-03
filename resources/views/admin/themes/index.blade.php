@@ -5,12 +5,6 @@
         </h2>
     </x-slot>
 
-    <!--
-       تم تعريف المتغيرات والدوال داخل x-data
-       themeName: لتخزين اسم الثيم الحالي
-       currentImage: لعرض صورة الثيم الحالية
-       formAction: لتغيير رابط الفورم ديناميكياً
-    -->
     <div class="py-12" x-data="{
         openModal: false,
         editMode: false,
@@ -151,7 +145,6 @@
                             <!-- Theme Name Input -->
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">اسم الثيم</label>
-                                <!-- x-model يربط الحقل بالمتغير لتعبئته تلقائياً عند التعديل -->
                                 <input type="text" name="theme" x-model="themeName" placeholder="مثال: Dark Mode, Minimal..."
                                     class="w-full bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#E60914] transition">
                             </div>
@@ -160,7 +153,6 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-300 mb-2">صورة الثيم</label>
 
-                                <!-- عرض الصورة الحالية في حالة التعديل فقط -->
                                 <div x-show="editMode && currentImage" class="mb-3">
                                     <p class="text-xs text-gray-500 mb-2">الصورة الحالية:</p>
                                     <img :src="currentImage" class="w-32 h-20 object-cover rounded border border-gray-700">

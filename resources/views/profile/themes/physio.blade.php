@@ -140,22 +140,34 @@
                             $platform = strtolower($link->platform->name);
                             @endphp
 
-                            @if($platform == 'instagram')
-                            <i class="fab fa-instagram text-xl text-pink-500 group-hover:text-white"></i>
-                            @elseif($platform == 'youtube' || $platform == 'youtube')
-                            <i class="fab fa-youtube text-xl text-red-500 group-hover:text-white"></i>
-                            @elseif($platform == 'tiktok' || $platform == 'tik tok')
-                            <i class="fab fa-tiktok text-xl text-black group-hover:text-white"></i>
-                            @elseif($platform == 'facebook')
-                            <i class="fab fa-facebook-f text-xl text-blue-600 group-hover:text-white"></i>
-                            @elseif($platform == 'twitter' || $platform == 'x')
-                            <i class="fab fa-x-twitter text-xl text-black group-hover:text-white"></i>
-                            @elseif($platform == 'linkedin')
-                            <i class="fab fa-linkedin-in text-xl text-blue-700 group-hover:text-white"></i>
-                            @else
-                            <!-- أيقونة افتراضية في حال لم يتم التعرف على المنصة -->
-                            <i class="fas fa-link text-xl text-teal-600 group-hover:text-white"></i>
-                            @endif
+                            @switch($link->platform->name)
+                            @case('Instagram')
+                            <i class="fab fa-instagram text-xl text-pink-500 group-hover:text-white"></i> @break
+                            @case('Twitter')
+                            <i class="fab fa-twitter text-xl text-sky-400 group-hover:text-white"></i> @break
+                            @case('LinkedIn')
+                            <i class="fab fa-linkedin text-xl text-blue-600 group-hover:text-white"></i> @break
+                            @case('Facebook')
+                            <i class="fab fa-facebook text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Tiktok')
+                            <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('WhatsApp')
+                            <i class="fab fa-whatsapp text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('TikTok')
+                            <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Snapchat')
+                            <i class="fab fa-snapchat text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Telegram')
+                            <i class="fab fa-telegram text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Email')
+                            <i class="fas fa-envelope text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Website')
+                            <i class="fas fa-globe text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('GitHub')
+                            <i class="fab fa-github text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @default
+                            <i class="fas fa-link text-xl text-slate-400 group-hover:text-white"></i>
+                            @endswitch
                         </div>
                         <span class="text-xs text-gray-500 group-hover:text-teal-800">{{ $link->platform->name }}</span>
                     </a>

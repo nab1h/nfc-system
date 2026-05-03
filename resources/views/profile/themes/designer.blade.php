@@ -132,14 +132,32 @@
 
                         <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#222] group-hover:bg-purple-500 transition">
                             @switch($link->platform->name)
-                            @case('Behance')
-                            <i class="fab fa-behance text-xl text-blue-400 group-hover:text-white neon-icon"></i> @break
-                            @case('Dribbble')
-                            <i class="fab fa-dribbble text-xl text-pink-400 group-hover:text-white neon-icon"></i> @break
                             @case('Instagram')
                             <i class="fab fa-instagram text-xl text-pink-500 group-hover:text-white"></i> @break
+                            @case('Twitter')
+                            <i class="fab fa-twitter text-xl text-sky-400 group-hover:text-white"></i> @break
+                            @case('LinkedIn')
+                            <i class="fab fa-linkedin text-xl text-blue-600 group-hover:text-white"></i> @break
+                            @case('Facebook')
+                            <i class="fab fa-facebook text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Tiktok')
+                            <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('WhatsApp')
+                            <i class="fab fa-whatsapp text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('TikTok')
+                            <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Snapchat')
+                            <i class="fab fa-snapchat text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Telegram')
+                            <i class="fab fa-telegram text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Email')
+                            <i class="fas fa-envelope text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Website')
+                            <i class="fas fa-globe text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('GitHub')
+                            <i class="fab fa-github text-xl text-blue-500 group-hover:text-white"></i> @break
                             @default
-                            <i class="fas fa-link text-xl text-gray-400 group-hover:text-white"></i>
+                            <i class="fas fa-link text-xl text-slate-400 group-hover:text-white"></i>
                             @endswitch
                         </div>
 

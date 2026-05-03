@@ -140,17 +140,32 @@
 
                             @php $platform = strtolower($link->platform->name); @endphp
 
-                            @if($platform == 'facebook')
-                            <i class="fab fa-facebook-f text-slate-600 group-hover:text-white"></i>
-                            @elseif($platform == 'instagram')
-                            <i class="fab fa-instagram text-slate-600 group-hover:text-white"></i>
-                            @elseif($platform == 'linkedin')
-                            <i class="fab fa-linkedin-in text-slate-600 group-hover:text-white"></i>
-                            @elseif($platform == 'twitter' || $platform == 'x')
-                            <i class="fab fa-x-twitter text-slate-600 group-hover:text-white"></i>
-                            @else
-                            <i class="fas fa-link text-slate-600 group-hover:text-white"></i>
-                            @endif
+                            @switch($link->platform->name)
+                            @case('Instagram')
+                            <i class="fab fa-instagram text-xl text-pink-500 group-hover:text-white"></i> @break
+                            @case('Twitter')
+                            <i class="fab fa-twitter text-xl text-sky-400 group-hover:text-white"></i> @break
+                            @case('LinkedIn')
+                            <i class="fab fa-linkedin text-xl text-blue-600 group-hover:text-white"></i> @break
+                            @case('Facebook')
+                            <i class="fab fa-facebook text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Tiktok')
+                            <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('WhatsApp')
+                            <i class="fab fa-whatsapp text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('TikTok')
+                            <i class="fab fa-tiktok text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Snapchat')
+                            <i class="fab fa-snapchat text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Telegram')
+                            <i class="fab fa-telegram text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('Website')
+                            <i class="fas fa-globe text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @case('GitHub')
+                            <i class="fab fa-github text-xl text-blue-500 group-hover:text-white"></i> @break
+                            @default
+                            <i class="fas fa-link text-xl text-slate-400 group-hover:text-white"></i>
+                            @endswitch
                         </div>
                         <span class="text-[10px] text-gray-400 group-hover:text-slate-800">{{ $link->platform->name }}</span>
                     </a>
@@ -164,7 +179,7 @@
         <!-- ذيل البطاقة -->
         <div class="text-center py-3 border-t border-gray-100 bg-gray-50">
             <span class="text-[10px] text-gray-400 uppercase tracking-wider">
-                Powered by <span class="font-bold text-slate-600">NFC System</span>
+                Powered by <span class="font-bold text-slate-600">AVORA</span>
             </span>
         </div>
     </div>
