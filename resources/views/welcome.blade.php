@@ -363,8 +363,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Products Section -->
     <!-- Products Section -->
     <section id="products" class="py-24 relative bg-surface">
         <div class="absolute inset-0 grid-pattern opacity-50"></div>
@@ -381,62 +379,76 @@
 
             <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
 
-                <!-- Product 1: Classic -->
-                <div onclick="openProductModal(this)" class="reveal product-card group bg-surface border border-default rounded-2xl overflow-hidden hover:border-accent transition-all duration-300 cursor-pointer">
+                @forelse($products as $product)
+                @php
+                $isFeatured = ($product->type && $product->type->name === 'Pro');
+                @endphp
 
-                    <!-- بيانات مخفية للجافاسكريبت -->
-                    <div class="hidden product-data"
-                        data-title="بطاقة NFC كلاسيك"
-                        data-desc="تصميم أنيق وعملي يناسب الاستخدام اليومي، مصنوعة من مواد عالية الجودة مع مقاومة للماء."
-                        data-features='["ذاكرة تخزينية 1 جيجا", "صفحة بروفايل أساسية", "مقاومة للماء", "صلاحية سنة واحدة"]'
-                        data-missing='["طباعة لوجو مخصص", "تصميم VIP"]'
-                        data-img1="https://via.placeholder.com/600x400/1a1a1a/E60914?text=Classic+View+1"
-                        data-img2="https://via.placeholder.com/600x400/1a1a1a/fff?text=Classic+View+2"
-                        data-img3="https://via.placeholder.com/600x400/1a1a1a/E60914?text=Classic+View+3">
-                    </div>
+                <div onclick="openProductModal(this)"
+                    class="reveal product-card group bg-surface border {{ $isFeatured ? 'border-2 border-accent shadow-lg shadow-accent/10 relative' : 'border-default hover:border-accent' }} rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer">
 
-                    <div class="relative h-48 overflow-hidden bg-[#111]">
-                        <img src="https://via.placeholder.com/400x300/1a1a1a/E60914?text=Classic+Card"
-                            alt="بطاقة كلاسيك"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    </div>
-
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-1">بطاقة NFC كلاسيك</h3>
-                        <p class="text-muted text-sm mb-4">تصميم أنيق عملي</p>
-                        <div class="flex justify-between items-center text-accent">
-                            <span class="font-bold text-sm">المزيد من التفاصيل</span>
-                            <i class="fas fa-arrow-left text-sm transform group-hover:-translate-x-2 transition-transform"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 2: Pro (Featured) -->
-                <div onclick="openProductModal(this)" class="reveal delay-1 product-card group bg-surface border-2 border-accent rounded-2xl overflow-hidden shadow-lg shadow-accent/10 relative cursor-pointer">
-
+                    <!-- شريط "الأكثر مبيعاً" للمنتجات المميزة -->
+                    @if($isFeatured)
                     <div class="absolute top-4 right-4 bg-accent text-white text-xs font-bold px-3 py-1 rounded-full z-10">
                         الأكثر مبيعاً
                     </div>
+                    @endif
 
+                    <!-- بيانات مخفية للجافاسكريبت (Modal Data) -->
                     <div class="hidden product-data"
-                        data-title="بطاقة NFC برو"
-                        data-desc="للمحترفين والشركات، تقدم أداءً استثنائياً وتصميماً يجذب الأنظار مع إمكانيات لا محدودة."
-                        data-features='["ذاكرة تخزينية 4 جيجا", "صفحة بروفايل مخصصة", "طباعة لوجو مجاناً", "تصميم VIP حصري", "دعم فني 24/7"]'
-                        data-missing='[]'
-                        data-img1="https://via.placeholder.com/600x400/1a1a1a/E60914?text=Pro+View+1"
-                        data-img2="https://via.placeholder.com/600x400/1a1a1a/fff?text=Pro+View+2"
-                        data-img3="https://via.placeholder.com/600x400/1a1a1a/E60914?text=Pro+View+3">
+                        data-title="{{ $product->name }}"
+                        data-desc="{{ $product->title ?? $product->name }}"
+                        data-features='@json($product->type ? $product->type->properties->pluck('name') : [])'
+                        data-img1="{{ $product->img_1 ? asset('storage/' . $product->img_1) : 'https://via.placeholder.com/600x400/1a1a1a/E60914?text=Image+1' }}"
+                        data-img2="{{ $product->img_2 ? asset('storage/' . $product->img_2) : ($product->img_1 ? asset('storage/' . $product->img_1) : '') }}"
+                        data-img3="{{ $product->img_3 ? asset('storage/' . $product->img_3) : ($product->img_1 ? asset('storage/' . $product->img_1) : '') }}">
                     </div>
 
+                    <!-- صورة المنتج -->
                     <div class="relative h-48 overflow-hidden bg-[#111]">
-                        <img src="https://via.placeholder.com/400x300/1a1a1a/E60914?text=Premium+Card"
-                            alt="بطاقة برو"
+                        <img src="{{ $product->img_1 ? asset('storage/' . $product->img_1) : 'https://via.placeholder.com/400x300/1a1a1a/E60914?text=No+Image' }}"
+                            alt="{{ $product->name }}"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     </div>
 
+                    <!-- تفاصيل المنتج -->
                     <div class="p-6">
-                        <h3 class="text-xl font-bold mb-1">بطاقة NFC برو</h3>
-                        <p class="text-muted text-sm mb-4">للمحترفين والشركات</p>
+                        <div class="flex justify-between items-start mb-1">
+                            <h3 class="text-xl font-bold text-white">{{ $product->name }}</h3>
+                            @if($product->type)
+                            <span class="text-xs px-2 py-1 rounded-full border {{ $isFeatured ? 'bg-accent/10 text-accent border-accent/30' : 'bg-white/5 text-gray-400 border-white/10' }}">
+                                {{ $product->type->name }}
+                            </span>
+                            @endif
+                        </div>
+
+                        <p class="text-muted text-sm mb-3">{{ $product->title ?? 'منتج متميز' }}</p>
+
+                        <div class="mt-3">
+                            @if($product->type && $product->type->properties->count() > 0)
+                            <ul class="list-disc list-inside space-y-1">
+                                @foreach ($product->type->properties as $property)
+                                <li class="text-xs text-gray-400 flex items-center gap-1">
+                                    <svg class="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>{{ $property->name }}</span>
+                                </li>
+                                @endforeach
+                            </ul>
+                            @else
+                            <p class="text-xs text-gray-600">لا توجد مميزات محددة لهذه الباقة</p>
+                            @endif
+                        </div>
+
+                        <!-- السعر والخصم -->
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-lg font-bold text-accent">{{ $product->price }} ج.م</span>
+                            @if($product->discount)
+                            <span class="text-sm text-gray-500 line-through">{{ $product->discount }}</span>
+                            @endif
+                        </div>
+
                         <div class="flex justify-between items-center text-accent">
                             <span class="font-bold text-sm">المزيد من التفاصيل</span>
                             <i class="fas fa-arrow-left text-sm transform group-hover:-translate-x-2 transition-transform"></i>
@@ -444,24 +456,12 @@
                     </div>
                 </div>
 
-                <!-- Product 3: Coming Soon -->
-                <div class="reveal delay-2 product-card group bg-surface border border-dashed border-gray-600 rounded-2xl overflow-hidden opacity-60 relative cursor-default">
-                    <div class="relative h-48 overflow-hidden bg-[#111]">
-                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-t from-surface to-[#1a1a1a]">
-                            <svg class="w-16 h-16 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                            </svg>
-                        </div>
-                    </div>
-
-                    <div class="p-6 text-center">
-                        <span class="inline-block bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 text-xs font-bold px-3 py-1 rounded-full mb-3">
-                            قريباً
-                        </span>
-                        <h3 class="text-xl font-bold mb-1 text-gray-400">بطاقة NFC فل ميتال</h3>
-                        <p class="text-muted text-sm">تصميم معدني فاخر</p>
-                    </div>
+                @empty
+                <!-- في حالة عدم وجود منتجات -->
+                <div class="col-span-3 text-center py-12">
+                    <p class="text-gray-500">لا توجد منتجات حالياً.</p>
                 </div>
+                @endforelse
 
             </div>
         </div>
@@ -473,7 +473,9 @@
 
             <!-- Close Button -->
             <button onclick="closeProductModal()" class="absolute top-4 left-4 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-accent text-white transition">
-                <i class="fas fa-times"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
             </button>
 
             <div class="grid md:grid-cols-2 gap-0">
@@ -508,7 +510,7 @@
                     <div class="mb-8 flex-grow">
                         <h4 class="text-lg font-bold text-white mb-4">المواصفات والمميزات</h4>
                         <ul id="modalFeatures" class="space-y-3">
-                            <!-- JS will inject features here -->
+
                         </ul>
                     </div>
 
@@ -803,82 +805,6 @@
         });
     </script>
 
-    <script>
-        function openProductModal(card) {
-            try {
-                const data = card.querySelector('.product-data');
-
-                if (!data) {
-                    console.error('لم يتم العثور على بيانات المنتج (product-data div)');
-                    return;
-                }
-
-                const title = data.dataset.title;
-                const desc = data.dataset.desc;
-                const features = JSON.parse(data.dataset.features || '[]');
-                const missing = JSON.parse(data.dataset.missing || '[]');
-                const img1 = data.dataset.img1;
-                const img2 = data.dataset.img2;
-                const img3 = data.dataset.img3;
-
-                document.getElementById('modalTitle').innerText = title;
-                document.getElementById('modalDesc').innerText = desc;
-
-                document.getElementById('modalMainImg').src = img1;
-                document.getElementById('modalThumb1').src = img1;
-                document.getElementById('modalThumb2').src = img2;
-                document.getElementById('modalThumb3').src = img3;
-
-                const featuresContainer = document.getElementById('modalFeatures');
-                featuresContainer.innerHTML = '';
-
-                features.forEach(feature => {
-                    featuresContainer.innerHTML += `
-                    <li class="flex items-center gap-3">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E60914" stroke-width="2"><polyline points="20 6 9 17 4 12" /></svg>
-                        <span class="text-white">${feature}</span>
-                    </li>
-                `;
-                });
-
-                missing.forEach(feature => {
-                    featuresContainer.innerHTML += `
-                    <li class="flex items-center gap-3 text-muted line-through opacity-70">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-                        <span>${feature}</span>
-                    </li>
-                `;
-                });
-
-                // 4. إظهار النافذة
-                const modal = document.getElementById('productModal');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                document.body.style.overflow = 'hidden';
-
-            } catch (error) {
-                console.error('حدث خطأ أثناء فتح النافذة:', error);
-            }
-        }
-
-        function closeProductModal() {
-            const modal = document.getElementById('productModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            document.body.style.overflow = 'auto';
-        }
-
-        function changeMainImg(thumbnail) {
-            const mainImg = document.getElementById('modalMainImg');
-            mainImg.src = thumbnail.querySelector('img').src;
-        }
-
-        document.getElementById('productModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeProductModal();
-            }
-        });
-    </script>
 </body>
 
 </html>

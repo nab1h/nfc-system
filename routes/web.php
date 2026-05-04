@@ -1,32 +1,28 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\admin\ThemeController;
 use App\Http\Controllers\admin\PlatformController;
+use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 
-
-
-
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
-
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/vcard/{slug}', [ProfileController::class, 'downloadVcard'])->name('vcard.download');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::put('/profile/update-data', [ProfileController::class, 'updateData'])->name('profile.update.data');
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::put('/profile/update-data', [ProfileController::class, 'updateData'])->name('profile.update.data');
 
     // admin
-    Route::middleware('role:admin')->group(function () {
+        Route::middleware('role:admin')->group(function () {
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
             Route::resource('users', UserController::class);
@@ -41,9 +37,29 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{id}', [ThemeController::class, 'destroy'])->name('destroy');
         });
         // ** Orders Controller **
-        Route::delete('/orders/{id}/force-delete', [OrderController::class, 'forceDelete'])->name('orders.force-delete');
-        Route::delete('/orders/delete-all', [OrderController::class, 'deleteAllOrder'])
+            Route::delete('/orders/{id}/force-delete', [OrderController::class, 'forceDelete'])->name('orders.force-delete');
+            Route::delete('/orders/delete-all', [OrderController::class, 'deleteAllOrder'])
             ->name('orders.deleteAllOrder');
+
+        // ** Settings Controller **
+            Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+            // categories
+            Route::post('/categories', [SettingController::class, 'storeCategory'])->name('categories.store');
+            Route::put('/categories/{category}', [SettingController::class, 'updateCategory'])->name('categories.update');
+            Route::delete('/categories/{category}', [SettingController::class, 'destroyCategory'])->name('categories.destroy');
+
+            // properties
+            Route::post('/properties', [SettingController::class, 'storeProperty'])->name('properties.store');
+            Route::put('/properties/{property}', [SettingController::class, 'updateProperty'])->name('properties.update');
+            Route::delete('/properties/{property}', [SettingController::class, 'destroyProperty'])->name('properties.destroy');
+
+            // types
+            Route::post('/types', [SettingController::class, 'storeType'])->name('types.store');
+            Route::put('/types/{type}', [SettingController::class, 'updateType'])->name('types.update');
+            Route::delete('/types/{type}', [SettingController::class, 'destroyType'])->name('types.destroy');
+
+        // ** Products Controller **
+            Route::resource('products', ProductController::class);
     });
 
     // admin + sales
