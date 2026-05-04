@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AvoraMail;
 use App\Models\Category;
 use App\Models\Property;
 use App\Models\Type;
@@ -14,7 +16,7 @@ class SettingController extends Controller
     {
         $categories = Category::latest()->get();
         $properties = Property::latest()->get();
-        $types = Type::with('properties')->latest()->get(); // جلب الباقات مع خصائصها
+        $types = Type::with('properties')->latest()->get();
 
         return view('admin.settings.index', compact('categories', 'properties', 'types'));
     }
@@ -24,6 +26,7 @@ class SettingController extends Controller
     {
         $request->validate(['name' => 'required|string|max:255']);
         Category::create($request->only('name'));
+        Mail::to('beboalashmawy@gmail.com')->send(new AvoraMail());
         return back()->with('status', 'تم إضافة التصنيف بنجاح');
     }
 

@@ -10,18 +10,16 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class MailGunEmail extends Mailable
+class AvoraMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-
-    public $msg;
-    public function __construct($mymsg)
+    public function __construct()
     {
-        $this->msg = $mymsg;
+        //
     }
 
     /**
@@ -30,7 +28,7 @@ class MailGunEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Mail Gun Email',
+            subject: 'Avora Mail',
         );
     }
 
@@ -40,7 +38,7 @@ class MailGunEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.basic',
+            view: 'Mail.basic',
         );
     }
 
