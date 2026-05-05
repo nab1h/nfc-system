@@ -26,7 +26,6 @@ class SettingController extends Controller
     {
         $request->validate(['name' => 'required|string|max:255']);
         Category::create($request->only('name'));
-        Mail::to('beboalashmawy@gmail.com')->send(new AvoraMail());
         return back()->with('status', 'تم إضافة التصنيف بنجاح');
     }
 
